@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore | AzdyClipz</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            background: radial-gradient(circle at top, #0a1a3a, #000);
+            color: white;
+        }
+
+        main {
+            opacity: 0;
+            transition: opacity 0.42s ease;
+        }
+
+        main.page-visible {
+            opacity: 1;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px 40px;
+            background: transparent;
+            border-radius: 40px;
+            margin: 20px auto;
+            gap: 30px;
+            width: fit-content;
+            max-width: calc(100% - 24px);
+            position: relative;
+            z-index: 2;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 95%;
+            background: rgba(77, 163, 255, 0.1);
+            border: none;
+            border-radius: 40px;
+            z-index: -1;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #4da3ff;
+            text-decoration: none;
+        }
+
+        .logo::after {
+            display: none;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            width: fit-content;
+            max-width: calc(100% - 24px);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        nav::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 150%;
+            background: rgba(77, 163, 255, 0.08);
+            border: none;
+            border-radius: 30px;
+            z-index: -3;
+        }
+
+        .nav-slider {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            height: calc(100% - 8px);
+            width: 80px;
+            transform: translateX(0) translateY(-50%);
+            border-radius: 20px;
+            background: linear-gradient(90deg, rgba(77, 163, 255, 0.92) 0%, rgba(77, 163, 255, 1) 50%, rgba(77, 163, 255, 0.92) 100%);
+            box-shadow: 0 0 24px rgba(77, 163, 255, 0.32);
+            z-index: -1;
+            transition: transform 0.78s cubic-bezier(0.16, 1, 0.3, 1), width 0.78s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease-out;
+            will-change: transform, width, opacity;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        nav a {
+            margin: 0;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #ddd;
+            transition: 0.3s;
+            width: fit-content;
+            max-width: calc(100% - 24px);
+            position: relative;
+            z-index: 1;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            border-radius: 20px;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 2px;
+            width: calc(100% - 4px);
+            height: calc(100% - 8px);
+            background: rgba(255, 255, 255, 0.22);
+            border: none;
+            border-radius: 16px;
+            z-index: -2;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: -125%;
+            width: 120%;
+            height: calc(100% - 4px);
+            border-radius: 18px;
+            background: linear-gradient(90deg, rgba(77, 163, 255, 0) 0%, rgba(77, 163, 255, 0.24) 30%, rgba(77, 163, 255, 0.5) 55%, rgba(77, 163, 255, 0.1) 100%);
+            opacity: 1;
+            transform: translateX(0);
+            transition: transform 0.42s ease;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        nav a:hover {
+            color: #ddd;
+        }
+
+        nav a:hover::before,
+        nav a:focus-visible::before {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            opacity: 1;
+        }
+
+        nav a.press-glow::after,
+        nav a:focus-visible::after {
+            transform: translateX(190%);
+        }
+
+        nav a:active::after {
+            transform: translateX(190%);
+            transition-duration: 0.12s;
+        }
+
+        .active {
+            color: white !important;
+            font-weight: 700;
+        }
+
+        .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            -webkit-text-stroke: 1px #fff;
+        }
+
+        .auth-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid #4da3ff;
+            background: transparent;
+            color: #4da3ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .auth-btn {
+            height: 40px;
+            padding: 0 20px;
+            min-width: 104px;
+            background: transparent;
+            border: 2px solid #4da3ff;
+            color: #4da3ff;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 12px;
+            line-height: 1;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .auth-btn:hover {
+            background: #4da3ff;
+            color: #000;
+        }
+
+        main {
+            max-width: 980px;
+            margin: 40px auto 0;
+            padding: 0 20px 120px;
+            text-align: center;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid #4da3ff;
+            color: #4da3ff;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 56px;
+            color: #4da3ff;
+            margin-bottom: 14px;
+        }
+
+        p {
+            color: #9fb1ce;
+            line-height: 1.7;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .clip-manager {
+            margin: 34px auto 0;
+            max-width: 900px;
+            text-align: left;
+            display: grid;
+            gap: 16px;
+        }
+
+        .owner-tools {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .owner-tools strong {
+            color: #edf5ff;
+            font-size: 15px;
+        }
+
+        .owner-tools span {
+            color: #a8bfdc;
+            font-size: 13px;
+        }
+
+        .owner-tools button {
+            border: 1px solid rgba(77, 163, 255, 0.5);
+            background: rgba(77, 163, 255, 0.16);
+            color: #e2f0ff;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .panel {
+            background: rgba(10, 26, 58, 0.48);
+            border: 1px solid rgba(77, 163, 255, 0.26);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.24);
+        }
+
+        .panel h2 {
+            font-size: 20px;
+            color: #e9f2ff;
+            margin: 0 0 10px;
+        }
+
+        .panel p {
+            max-width: none;
+            margin: 0;
+            color: #b9cae2;
+            font-size: 14px;
+        }
+
+        .clip-form {
+            margin-top: 12px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 160px auto;
+            gap: 10px;
+        }
+
+        .clip-form input,
+        .clip-form select {
+            border: 1px solid rgba(77, 163, 255, 0.35);
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .clip-form input[type='file'] {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        .thumb-upload {
+            border: 1px solid rgba(77, 163, 255, 0.45);
+            background: rgba(77, 163, 255, 0.14);
+            color: #d8ebff;
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            min-height: 42px;
+            user-select: none;
+        }
+
+        .thumb-plus {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(77, 163, 255, 0.28);
+            color: #fff;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .thumb-label {
+            font-size: 12px;
+            color: #cfe5ff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .clip-form select option {
+            color: #fff;
+            background: #0b1632;
+        }
+
+        .clip-form button {
+            border: 0;
+            background: #4da3ff;
+            color: white;
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .status {
+            margin-top: 10px;
+            min-height: 20px;
+            font-size: 13px;
+            color: #9fd0ff;
+        }
+
+        .clip-list {
+            margin-top: 12px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .clip-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid rgba(77, 163, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .clip-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .clip-thumb {
+            width: 128px;
+            height: 72px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid rgba(77, 163, 255, 0.32);
+            background: rgba(77, 163, 255, 0.12);
+            flex-shrink: 0;
+        }
+
+        .clip-text {
+            min-width: 0;
+        }
+
+        .clip-title {
+            font-weight: 700;
+            color: #ecf4ff;
+            margin-bottom: 4px;
+        }
+
+        .clip-meta {
+            font-size: 12px;
+            color: #9bb0ce;
+        }
+
+        .chip {
+            font-size: 11px;
+            padding: 5px 8px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            font-weight: 700;
+        }
+
+        .chip.public {
+            color: #8de6a9;
+            border-color: rgba(141, 230, 169, 0.45);
+            background: rgba(57, 185, 101, 0.12);
+        }
+
+        .chip.unlisted {
+            color: #ffd57f;
+            border-color: rgba(255, 213, 127, 0.5);
+            background: rgba(255, 213, 127, 0.12);
+        }
+
+        .chip.private {
+            color: #ff9ca9;
+            border-color: rgba(255, 156, 169, 0.5);
+            background: rgba(255, 156, 169, 0.12);
+        }
+
+        .clip-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .clip-actions a,
+        .clip-actions button {
+            border: 1px solid rgba(77, 163, 255, 0.35);
+            background: rgba(77, 163, 255, 0.14);
+            color: #dcecff;
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 12px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .clip-actions select {
+            border: 1px solid rgba(77, 163, 255, 0.35);
+            background: rgba(77, 163, 255, 0.14);
+            color: #dcecff;
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 12px;
+        }
+
+        .clip-actions select option {
+            color: #fff;
+            background: #0b1632;
+        }
+
+        .clip-actions button {
+            border-color: rgba(255, 130, 130, 0.4);
+            background: rgba(255, 130, 130, 0.14);
+        }
+
+        .empty {
+            font-size: 13px;
+            color: #8ea4c2;
+            border: 1px dashed rgba(77, 163, 255, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        @media (max-width: 800px) {
+            .clip-form {
+                grid-template-columns: 1fr;
+            }
+
+            .clip-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        .categories-section {
+            margin: 60px 0 40px;
+            text-align: center;
+        }
+
+        .categories-title {
+            font-size: 32px;
+            color: #4da3ff;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .category-card {
+            background: linear-gradient(135deg, rgba(77, 163, 255, 0.16) 0%, rgba(77, 163, 255, 0.08) 100%);
+            border: 1px solid rgba(77, 163, 255, 0.32);
+            border-radius: 14px;
+            padding: 24px 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #e9f2ff;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+            text-align: center;
+        }
+
+        .category-card:hover {
+            background: linear-gradient(135deg, rgba(77, 163, 255, 0.24) 0%, rgba(77, 163, 255, 0.16) 100%);
+            border-color: rgba(77, 163, 255, 0.56);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(77, 163, 255, 0.2);
+        }
+
+        .search-section {
+            margin: 40px 0 50px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(77, 163, 255, 0.45);
+            background: rgba(77, 163, 255, 0.1);
+            border-radius: 12px;
+            padding: 0 16px;
+            gap: 12px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-size: 14px;
+            padding: 12px 0;
+            outline: none;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-bar-icon {
+            font-size: 18px;
+            color: #4da3ff;
+        }
+
+        .search-clear {
+            background: none;
+            border: none;
+            color: #4da3ff;
+            font-size: 16px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .search-clear.active {
+            display: block;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to top right, black 50%, transparent 50%);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a class="logo" href="site.html">AZDYCLIPZ</a>
+        <nav>
+            <span class="nav-slider" aria-hidden="true"></span>
+            <a href="site.html">Home</a>
+            <a class="active" href="explore.html">Explore</a>
+            <a href="favorites.html">Favorites</a>
+            <a href="faq.html">FAQ</a>
+            <a href="about.html">About</a>
+            <a href="policy.html">Policy</a>
+        </nav>
+        <div class="auth-actions">
+            <a class="profile-btn" href="auth.html" aria-label="Profile">&#128100;</a>
+            <a class="auth-btn" href="auth.html">Login</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="tag">● DISCOVER</div>
+        <h1>Explore</h1>
+        <p>Browse curated premium clips and categories built for fast, cinematic edits. Find what you need and jump
+            straight into your workflow.</p>
+
+        <section class="search-section">
+            <div class="search-bar">
+                <span class="search-bar-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search clips by title...">
+                <button class="search-clear" id="searchClear">✕</button>
+            </div>
+        </section>
+
+        <section class="categories-section" aria-label="Vehicle categories">
+            <h2 class="categories-title">Categories</h2>
+            <div class="categories-grid">
+                <button class="category-card" data-category="sports">🏁 Sports</button>
+                <button class="category-card" data-category="supercars">⚡ Supercars</button>
+                <button class="category-card" data-category="hypercars">🚀 Hypercars</button>
+                <button class="category-card" data-category="classics">🛣️ Classics</button>
+                <button class="category-card" data-category="luxury">👑 Luxury</button>
+                <button class="category-card" data-category="muscle">💪 Muscle</button>
+                <button class="category-card" data-category="concept">🔮 Concept</button>
+            </div>
+        </section>
+
+        <section class="clip-manager" aria-label="Clip upload and visibility manager">
+            <div class="panel" id="postPanel">
+                <h2>Post A Clip</h2>
+                <p>Choose who can see your upload: Public, Unlisted (link only), or Private (only you).</p>
+                <form class="clip-form" id="clipForm">
+                    <input type="text" id="clipTitle" placeholder="Clip title" required>
+                    <input type="url" id="clipUrl" placeholder="Clip URL (https://...)" required>
+                    <label class="thumb-upload" for="clipThumbnail" aria-label="Pick thumbnail image">
+                        <span class="thumb-plus">+</span>
+                        <span class="thumb-label" id="clipThumbLabel">Thumbnail</span>
+                    </label>
+                    <input type="file" id="clipThumbnail" accept="image/*" aria-label="Thumbnail image (optional)">
+                    <select id="clipVisibility" required>
+                        <option value="public">Public</option>
+                        <option value="unlisted">Unlisted (link only)</option>
+                        <option value="private">Private (only me)</option>
+                    </select>
+                    <button type="submit">Post Clip</button>
+                </form>
+                <div class="status" id="clipStatus" aria-live="polite"></div>
+            </div>
+
+            <div class="panel">
+                <h2>Visible Clips</h2>
+                <p>This feed shows clips visible to the current viewer.</p>
+                <div class="clip-list" id="visibleClips"></div>
+            </div>
+
+            <div class="panel" id="managePanel">
+                <h2>Your Uploads</h2>
+                <p>Manage your own clips, including private and unlisted posts.</p>
+                <div class="clip-list" id="myClips"></div>
+            </div>
+        </section>
+    </main>
+
+    <div class="wave"></div>
+
+    <script>
+        const nav = document.querySelector('nav');
+        const slider = nav.querySelector('.nav-slider');
+        const links = Array.from(nav.querySelectorAll('a'));
+        const authButton = document.querySelector('.auth-btn');
+        const profileButton = document.querySelector('.profile-btn');
+        const AUTH_KEY = 'azdyclipz.auth.v1';
+        const PROFILE_KEY = 'azdyclipz.profile.v1';
+
+        const readAuthSession = () => {
+            try {
+                const raw = window.localStorage.getItem(AUTH_KEY);
+                const parsed = raw ? JSON.parse(raw) : null;
+                return parsed && parsed.email ? parsed : null;
+            } catch (_error) {
+                return null;
+            }
+        };
+
+        const readProfileForSession = (session) => {
+            if (!session || !session.email) return null;
+            try {
+                const raw = window.localStorage.getItem(PROFILE_KEY);
+                const parsed = raw ? JSON.parse(raw) : {};
+                return parsed[session.email] || null;
+            } catch (_error) {
+                return null;
+            }
+        };
+
+        const applyProfileAvatar = (session) => {
+            if (!profileButton) return;
+
+            profileButton.textContent = String.fromCodePoint(0x1F464);
+            profileButton.style.backgroundImage = 'none';
+            profileButton.style.backgroundSize = 'cover';
+            profileButton.style.backgroundPosition = 'center';
+
+            const profile = readProfileForSession(session);
+            if (!profile || !profile.avatar) return;
+
+            profileButton.textContent = '';
+            profileButton.style.backgroundImage = `url('${profile.avatar}')`;
+        };
+
+        const refreshAuthButton = () => {
+            if (!authButton) return;
+            const session = readAuthSession();
+            const OWNER_FLAG_KEY = 'azdyclipz.isOwner.v1';
+            const isOwner = window.localStorage.getItem(OWNER_FLAG_KEY) === '1';
+
+            if (!session && !isOwner) {
+                authButton.textContent = 'Login';
+                authButton.title = 'Login or sign up';
+                authButton.setAttribute('href', 'auth.html');
+                if (profileButton) {
+                    profileButton.setAttribute('href', 'auth.html');
+                    profileButton.title = 'Profile';
+                }
+                applyProfileAvatar(null);
+                return;
+            }
+
+            authButton.textContent = 'Logout';
+            authButton.title = 'Log out';
+            authButton.setAttribute('href', '#logout');
+            if (profileButton) {
+                if (session) {
+                    const baseName = session.username || session.email || 'Profile';
+                    profileButton.setAttribute('href', 'profile.html');
+                    profileButton.title = 'Logged in as ' + baseName;
+                } else if (isOwner) {
+                    profileButton.setAttribute('href', 'owner-login.html');
+                    profileButton.title = 'Owner Mode';
+                }
+            }
+            applyProfileAvatar(session);
+        };
+
+        if (authButton) {
+            authButton.addEventListener('click', (event) => {
+                const OWNER_FLAG_KEY = 'azdyclipz.isOwner.v1';
+                const session = readAuthSession();
+                const isOwner = window.localStorage.getItem(OWNER_FLAG_KEY) === '1';
+
+                if (!session && !isOwner) return;
+
+                event.preventDefault();
+                window.localStorage.removeItem(AUTH_KEY);
+                window.localStorage.removeItem(OWNER_FLAG_KEY);
+                refreshAuthButton();
+            });
+        }
+
+        refreshAuthButton();
+
+        const syncActiveWithPath = () => {
+            const current = window.location.pathname.split('/').pop() || 'site.html';
+            window.sessionStorage.setItem('navActiveHref', current);
+            links.forEach((link) => {
+                const target = link.getAttribute('href') || '';
+                link.classList.toggle('active', target === current);
+            });
+        };
+
+        const getActiveLink = () => nav.querySelector('a.active') || links[0];
+
+        const setSliderInstant = (link) => {
+            if (!link) return;
+            const navRect = nav.getBoundingClientRect();
+            const linkRect = link.getBoundingClientRect();
+            const targetX = linkRect.left - navRect.left;
+            slider.style.transition = 'none';
+            slider.style.width = `${linkRect.width}px`;
+            slider.style.transform = `translateX(${targetX}px) translateY(-50%)`;
+            slider.style.opacity = '1';
+            requestAnimationFrame(() => {
+                slider.style.transition = 'transform 0.78s cubic-bezier(0.16, 1, 0.3, 1), width 0.78s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease-out';
+            });
+        };
+
+        const moveSliderTo = (link) => {
+            if (!link) return;
+            const navRect = nav.getBoundingClientRect();
+            const linkRect = link.getBoundingClientRect();
+            const targetX = linkRect.left - navRect.left;
+            slider.style.width = `${linkRect.width}px`;
+            slider.style.transform = `translateX(${targetX}px) translateY(-50%)`;
+        };
+
+        const animateSliderTo = (link) => {
+            if (!link) return;
+            slider.style.opacity = '1';
+            moveSliderTo(link);
+        };
+
+        syncActiveWithPath();
+        requestAnimationFrame(() => setSliderInstant(getActiveLink()));
+
+        // Keep this slightly longer than the slider transform duration (0.78s)
+        // so navigation does not cut the slide animation mid-motion.
+        const PAGE_TRANSITION_MS = 820;
+
+        const navigateWithTransition = (href) => {
+            const main = document.querySelector('main');
+            if (main) {
+                main.classList.remove('page-visible');
+            }
+            window.setTimeout(() => {
+                window.location.href = href;
+            }, PAGE_TRANSITION_MS);
+        };
+
+        requestAnimationFrame(() => {
+            document.querySelector('main').classList.add('page-visible');
+        });
+
+        links.forEach((link) => {
+            link.addEventListener('focus', () => animateSliderTo(link));
+            link.addEventListener('click', (event) => {
+                const href = link.getAttribute('href') || '';
+                window.sessionStorage.setItem('navActiveHref', href);
+
+                const targetUrl = new URL(href, window.location.href);
+                const currentUrl = new URL(window.location.href);
+
+                links.forEach((item) => item.classList.remove('active'));
+                link.classList.add('active');
+                animateSliderTo(link);
+
+                if (targetUrl.pathname === currentUrl.pathname) {
+                    event.preventDefault();
+                    return;
+                }
+
+                event.preventDefault();
+                navigateWithTransition(href);
+            });
+        });
+
+        const OWNER_ACCESS_CODE = 'azdy-owner';
+        const OWNER_FLAG_KEY = 'azdyclipz.isOwner.v1';
+        const OWNER_LOGIN_PAGE = 'owner-login.html';
+        const ownerParam = new URLSearchParams(window.location.search).get('owner') || '';
+        if (ownerParam === OWNER_ACCESS_CODE) {
+            window.localStorage.setItem(OWNER_FLAG_KEY, '1');
+        }
+
+        let isOwner = window.localStorage.getItem(OWNER_FLAG_KEY) === '1';
+        const CLIPS_KEY = 'azdyclipz.clips.v1';
+        const clipForm = document.querySelector('#clipForm');
+        const clipTitleInput = document.querySelector('#clipTitle');
+        const clipUrlInput = document.querySelector('#clipUrl');
+        const clipThumbnailInput = document.querySelector('#clipThumbnail');
+        const clipThumbLabel = document.querySelector('#clipThumbLabel');
+        const clipVisibilityInput = document.querySelector('#clipVisibility');
+        const clipStatus = document.querySelector('#clipStatus');
+        const visibleClipsRoot = document.querySelector('#visibleClips');
+        const myClipsRoot = document.querySelector('#myClips');
+        const postPanel = document.querySelector('#postPanel');
+        const managePanel = document.querySelector('#managePanel');
+        const shareToken = new URLSearchParams(window.location.search).get('share') || '';
+
+        const getCurrentUser = () => (isOwner ? 'you' : 'viewer');
+
+        const refreshOwnerPanels = () => {
+            if (postPanel) postPanel.style.display = isOwner ? '' : 'none';
+            if (managePanel) managePanel.style.display = isOwner ? '' : 'none';
+        };
+
+        const readClips = () => {
+            try {
+                const raw = window.localStorage.getItem(CLIPS_KEY);
+                const parsed = raw ? JSON.parse(raw) : [];
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (_error) {
+                return [];
+            }
+        };
+
+        const saveClips = (clips) => {
+            window.localStorage.setItem(CLIPS_KEY, JSON.stringify(clips));
+        };
+
+        const canViewClip = (clip) => {
+            if (clip.visibility === 'public') return true;
+            if (clip.owner === getCurrentUser()) return true;
+            if (clip.visibility === 'unlisted' && shareToken && clip.shareToken === shareToken) return true;
+            return false;
+        };
+
+        const makeChip = (visibility) => `<span class="chip ${visibility}">${visibility}</span>`;
+
+        const emptyState = (label) => `<div class="empty">${label}</div>`;
+
+        const formatDate = (value) => {
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return 'just now';
+            return date.toLocaleString();
+        };
+
+        const escapeHtml = (value) => String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+
+        const makeShareLink = (clip) => {
+            const url = new URL(window.location.href);
+            url.searchParams.set('share', clip.shareToken || '');
+            return url.toString();
+        };
+
+        const fileToDataUrl = (file) => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(String(reader.result || ''));
+            reader.onerror = () => reject(new Error('Failed to read thumbnail file.'));
+            reader.readAsDataURL(file);
+        });
+
+        const defaultThumbnail = (title) => {
+            const safeTitle = (title || 'Clip').slice(0, 24);
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="288" viewBox="0 0 512 288"><defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#1a3f7b" offset="0"/><stop stop-color="#0a1020" offset="1"/></linearGradient></defs><rect width="512" height="288" fill="url(#g)"/><circle cx="88" cy="76" r="46" fill="rgba(77,163,255,0.32)"/><text x="24" y="246" fill="#d9ecff" font-family="Arial,sans-serif" font-size="34" font-weight="700">${escapeHtml(safeTitle)}</text></svg>`;
+            return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+        };
+
+        const getThumbnailSrc = (clip) => clip.thumbnail || defaultThumbnail(clip.title);
+
+        const renderClips = () => {
+            const clips = readClips();
+            const visible = clips.filter(canViewClip);
+            const mine = clips.filter((clip) => clip.owner === getCurrentUser());
+
+            visibleClipsRoot.innerHTML = visible.length
+                ? visible.map((clip) => `
+                    <article class="clip-card">
+                        <div class="clip-main">
+                            <img class="clip-thumb" src="${getThumbnailSrc(clip)}" alt="${escapeHtml(clip.title)} thumbnail" loading="lazy">
+                            <div class="clip-text">
+                                <div class="clip-title">${escapeHtml(clip.title)}</div>
+                                <div class="clip-meta">posted ${formatDate(clip.createdAt)} by ${escapeHtml(clip.owner)} • ${makeChip(clip.visibility)}</div>
+                            </div>
+                        </div>
+                        <div class="clip-actions">
+                            <a href="${escapeHtml(clip.url)}" target="_blank" rel="noopener noreferrer">Open Clip</a>
+                        </div>
+                    </article>
+                `).join('')
+                : emptyState('No clips are visible right now.');
+
+            if (!isOwner) return;
+
+            myClipsRoot.innerHTML = mine.length
+                ? mine.map((clip) => {
+                    const shareButton = clip.visibility === 'unlisted'
+                        ? `<button type="button" data-action="copy-share" data-id="${clip.id}">Copy Unlisted Link</button>`
+                        : '';
+                    const visibilityControl = `
+                        <select data-action="set-visibility" data-id="${clip.id}" aria-label="Change visibility for ${escapeHtml(clip.title)}">
+                            <option value="public" ${clip.visibility === 'public' ? 'selected' : ''}>Public</option>
+                            <option value="unlisted" ${clip.visibility === 'unlisted' ? 'selected' : ''}>Unlisted</option>
+                            <option value="private" ${clip.visibility === 'private' ? 'selected' : ''}>Private</option>
+                        </select>
+                    `;
+                    return `
+                    <article class="clip-card">
+                        <div class="clip-main">
+                            <img class="clip-thumb" src="${getThumbnailSrc(clip)}" alt="${escapeHtml(clip.title)} thumbnail" loading="lazy">
+                            <div class="clip-text">
+                                <div class="clip-title">${escapeHtml(clip.title)}</div>
+                                <div class="clip-meta">posted ${formatDate(clip.createdAt)} • ${makeChip(clip.visibility)}</div>
+                            </div>
+                        </div>
+                        <div class="clip-actions">
+                            ${visibilityControl}
+                            <a href="${escapeHtml(clip.url)}" target="_blank" rel="noopener noreferrer">Open Clip</a>
+                            ${shareButton}
+                            <button type="button" data-action="delete" data-id="${clip.id}">Delete</button>
+                        </div>
+                    </article>
+                `;
+                }).join('')
+                : emptyState('You have not posted any clips yet.');
+        };
+
+        const randomId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
+        clipForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            if (!isOwner) {
+                clipStatus.textContent = 'Owner login required to post clips.';
+                return;
+            }
+
+            const title = clipTitleInput.value.trim();
+            const url = clipUrlInput.value.trim();
+            const thumbnailFile = clipThumbnailInput.files && clipThumbnailInput.files[0] ? clipThumbnailInput.files[0] : null;
+            const visibility = clipVisibilityInput.value;
+
+            if (!title || !url || !visibility) {
+                clipStatus.textContent = 'Please fill all fields.';
+                return;
+            }
+
+            let thumbnail = '';
+            if (thumbnailFile) {
+                if (!thumbnailFile.type.startsWith('image/')) {
+                    clipStatus.textContent = 'Thumbnail must be an image file.';
+                    return;
+                }
+                try {
+                    thumbnail = await fileToDataUrl(thumbnailFile);
+                } catch (_error) {
+                    clipStatus.textContent = 'Could not read thumbnail image.';
+                    return;
+                }
+            }
+
+            const share = visibility === 'unlisted' ? randomId() : '';
+            const nextClip = {
+                id: randomId(),
+                title,
+                url,
+                thumbnail,
+                visibility,
+                owner: getCurrentUser(),
+                shareToken: share,
+                createdAt: new Date().toISOString()
+            };
+
+            const clips = readClips();
+            clips.unshift(nextClip);
+            saveClips(clips);
+            clipForm.reset();
+            if (clipThumbLabel) clipThumbLabel.textContent = 'Thumbnail';
+            clipVisibilityInput.value = 'public';
+            clipStatus.textContent = visibility === 'private'
+                ? 'Posted as private. Only you can see this clip.'
+                : visibility === 'unlisted'
+                    ? 'Posted as unlisted. Use "Copy Unlisted Link" from Your Uploads to share it.'
+                    : 'Posted as public.';
+            renderClips();
+        });
+
+        clipThumbnailInput.addEventListener('change', () => {
+            const file = clipThumbnailInput.files && clipThumbnailInput.files[0] ? clipThumbnailInput.files[0] : null;
+            if (!clipThumbLabel) return;
+            clipThumbLabel.textContent = file ? file.name : 'Thumbnail';
+        });
+
+        myClipsRoot.addEventListener('click', async (event) => {
+            const target = event.target;
+            if (!(target instanceof HTMLElement)) return;
+            if (!isOwner) return;
+
+            const action = target.getAttribute('data-action');
+            const id = target.getAttribute('data-id');
+            if (!action || !id) return;
+
+            const clips = readClips();
+            const clip = clips.find((item) => item.id === id);
+            if (!clip) return;
+            if (clip.owner !== getCurrentUser()) {
+                clipStatus.textContent = 'Only the owner can adjust this upload.';
+                return;
+            }
+
+            if (action === 'delete') {
+                const next = clips.filter((item) => item.id !== id);
+                saveClips(next);
+                clipStatus.textContent = 'Clip deleted.';
+                renderClips();
+                return;
+            }
+
+            if (action === 'copy-share') {
+                try {
+                    const shareLink = makeShareLink(clip);
+                    await navigator.clipboard.writeText(shareLink);
+                    clipStatus.textContent = 'Unlisted link copied to clipboard.';
+                } catch (_error) {
+                    clipStatus.textContent = 'Copy failed. Open the clip and copy URL manually.';
+                }
+            }
+        });
+
+        myClipsRoot.addEventListener('change', (event) => {
+            const target = event.target;
+            if (!(target instanceof HTMLSelectElement)) return;
+            if (!isOwner) return;
+
+            const action = target.getAttribute('data-action');
+            const id = target.getAttribute('data-id');
+            const visibility = target.value;
+            if (action !== 'set-visibility' || !id) return;
+
+            const clips = readClips();
+            const clipIndex = clips.findIndex((item) => item.id === id);
+            if (clipIndex === -1) return;
+
+            const clip = clips[clipIndex];
+            if (clip.owner !== getCurrentUser()) {
+                clipStatus.textContent = 'Only the owner can adjust this upload.';
+                renderClips();
+                return;
+            }
+
+            clips[clipIndex].visibility = visibility;
+            if (visibility === 'unlisted' && !clips[clipIndex].shareToken) {
+                clips[clipIndex].shareToken = randomId();
+            }
+            if (visibility !== 'unlisted') {
+                clips[clipIndex].shareToken = '';
+            }
+
+            saveClips(clips);
+            clipStatus.textContent = `Visibility updated to ${visibility}.`;
+            renderClips();
+        });
+
+        refreshOwnerPanels();
+        renderClips();
+
+        // Category handling
+        const categoryCards = document.querySelectorAll('.category-card');
+        categoryCards.forEach((card) => {
+            card.addEventListener('click', () => {
+                const category = card.getAttribute('data-category');
+                clipStatus.textContent = `Filtering by category: ${category}`;
+                categoryCards.forEach((c) => c.style.opacity = c === card ? '1' : '0.6');
+                card.style.opacity = '1';
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.querySelector('#searchInput');
+        const searchClear = document.querySelector('#searchClear');
+
+        const filterClips = (searchTerm) => {
+            const clips = readClips();
+            if (!searchTerm.trim()) {
+                renderClips();
+                searchClear.classList.remove('active');
+                return;
+            }
+
+            searchClear.classList.add('active');
+            const filtered = clips.filter((clip) =>
+                clip.title.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            const visible = filtered.filter(canViewClip);
+            const mine = filtered.filter((clip) => clip.owner === getCurrentUser());
+
+            visibleClipsRoot.innerHTML = visible.length
+                ? visible.map((clip) => `
+                    <article class="clip-card">
+                        <div class="clip-main">
+                            <img class="clip-thumb" src="${getThumbnailSrc(clip)}" alt="${escapeHtml(clip.title)} thumbnail" loading="lazy">
+                            <div class="clip-text">
+                                <div class="clip-title">${escapeHtml(clip.title)}</div>
+                                <div class="clip-meta">posted ${formatDate(clip.createdAt)} by ${escapeHtml(clip.owner)} • ${makeChip(clip.visibility)}</div>
+                            </div>
+                        </div>
+                        <div class="clip-actions">
+                            <a href="${escapeHtml(clip.url)}" target="_blank" rel="noopener noreferrer">Open Clip</a>
+                        </div>
+                    </article>
+                `).join('')
+                : emptyState('No clips match your search.');
+
+            if (!isOwner) return;
+
+            myClipsRoot.innerHTML = mine.length
+                ? mine.map((clip) => {
+                    const shareButton = clip.visibility === 'unlisted'
+                        ? `<button type="button" data-action="copy-share" data-id="${clip.id}">Copy Unlisted Link</button>`
+                        : '';
+                    const visibilityControl = `
+                        <select data-action="set-visibility" data-id="${clip.id}" aria-label="Change visibility for ${escapeHtml(clip.title)}">
+                            <option value="public" ${clip.visibility === 'public' ? 'selected' : ''}>Public</option>
+                            <option value="unlisted" ${clip.visibility === 'unlisted' ? 'selected' : ''}>Unlisted</option>
+                            <option value="private" ${clip.visibility === 'private' ? 'selected' : ''}>Private</option>
+                        </select>
+                    `;
+                    return `
+                    <article class="clip-card">
+                        <div class="clip-main">
+                            <img class="clip-thumb" src="${getThumbnailSrc(clip)}" alt="${escapeHtml(clip.title)} thumbnail" loading="lazy">
+                            <div class="clip-text">
+                                <div class="clip-title">${escapeHtml(clip.title)}</div>
+                                <div class="clip-meta">posted ${formatDate(clip.createdAt)} • ${makeChip(clip.visibility)}</div>
+                            </div>
+                        </div>
+                        <div class="clip-actions">
+                            ${visibilityControl}
+                            <a href="${escapeHtml(clip.url)}" target="_blank" rel="noopener noreferrer">Open Clip</a>
+                            ${shareButton}
+                            <button type="button" data-action="delete" data-id="${clip.id}">Delete</button>
+                        </div>
+                    </article>
+                `;
+                }).join('')
+                : emptyState('No uploads match your search.');
+        };
+
+        if (searchInput) {
+            searchInput.addEventListener('input', (event) => {
+                filterClips(event.target.value);
+            });
+        }
+
+        if (searchClear) {
+            searchClear.addEventListener('click', () => {
+                searchInput.value = '';
+                renderClips();
+                searchClear.classList.remove('active');
+            });
+        }
+
+        const syncSliderPosition = () => moveSliderTo(getActiveLink());
+        window.addEventListener('resize', syncSliderPosition);
+        window.addEventListener('load', syncSliderPosition);
+        window.addEventListener('pageshow', syncSliderPosition);
+    </script>
+</body>
+
+</html>
